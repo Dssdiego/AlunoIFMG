@@ -24,10 +24,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.google.firebase:firebase-firestore:11.8.0'
     testImplementation 'junit:junit:4.12'
-    
+
     // Percent Layout
     implementation 'com.android.support:percent:27.1.1'
 
@@ -36,7 +37,15 @@ dependencies {
 
     // Weather Icon View
     implementation 'com.github.pwittchen:weathericonview:1.1.0'
-    
+
+    // RecyclerView
+    compile 'com.android.support:recyclerview-v7:27.1.1'
+
+    // Firebase UI
+    implementation 'com.firebaseui:firebase-ui-firestore:3.2.2'
+
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

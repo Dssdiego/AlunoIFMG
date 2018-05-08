@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "165721553153",
+    "firebase_url": "https://alunoifmg-555e4.firebaseio.com",
+    "project_id": "alunoifmg-555e4"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165721553153:android:ca6defdc843397dd",
+        "android_client_info": {
+          "package_name": "com.obsidianstudios.alunoifmg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165721553153-4drt9b8kfvrfiok6qj5v9t4l662ojgfo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.obsidianstudios.alunoifmg",
+            "certificate_hash": "c03eff1863aec43cc9980867c89092d152e1f1b4"
+          }
+        },
+        {
+          "client_id": "165721553153-irkna554310v8c2iv6p0r306n0iq9s67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDitivmdl94z7IIaX-JWf4X5uxFKnnOzHk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165721553153-irkna554310v8c2iv6p0r306n0iq9s67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
