@@ -4,26 +4,18 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
+import com.obsidianstudios.alunoifmg.models.Assignment
+import com.obsidianstudios.alunoifmg.models.Note
+import com.obsidianstudios.alunoifmg.widgets.UnscrollableLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.google.firebase.firestore.FirebaseFirestoreException
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import android.widget.TextView
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.guidoapps.firestorerecycleradaptersample.ClassResponse
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var db: FirebaseFirestore? = null
-    private var adapter: FirestoreRecyclerAdapter<ClassResponse, FriendsHolder>? = null
-    var dayOfTheWeek: String = ""
+    private var dayOfTheWeek: String = ""
+    private lateinit var today: Date
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,90 +24,56 @@ class MainActivity : AppCompatActivity() {
         // Weather Icons Reference
         // http://erikflowers.github.io/weather-icons/
 
-        init()
-        getClasses()
-
         val sdf = SimpleDateFormat("EEEE")
-        val d = Date()
-        dayOfTheWeek = sdf.format(d)
+        today = Date()
+        dayOfTheWeek = sdf.format(today)
 
         Log.d("TAG", dayOfTheWeek)
 
+        recycler.adapter = NoteListAdapter(notes(), this)
+        recycler.layoutManager = UnscrollableLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        recyclerAssingments.adapter = AssignmentListAdapter(assignments(), this)
+        recyclerAssingments.layoutManager = UnscrollableLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun init() {
-        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler.setHasFixedSize(true)
-        db = FirebaseFirestore.getInstance()
-    }
-
-    private fun getClasses() {
-        val query = db!!.collection("courses").document("sistemas-informacao").collection("classes")
-
-        val docRef = db!!.collection("courses").document("sistemas-informacao").collection("classes").document(dayOfTheWeek)
-        docRef.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val document = task.result
-                if (document.exists()) {
-                    Log.d("TAG", document.toString())
-//                    Log.d(FragmentActivity.TAG, "DocumentSnapshot data: " + document.data)
-                } else {
-//                    Log.d(FragmentActivity.TAG, "No such document")
-                }
-            } else {
-//                Log.d(FragmentActivity.TAG, "get failed with ", task.exception)
-            }
-        }
-
-        Log.d("TAG", query.toString())
-
-        val response = FirestoreRecyclerOptions.Builder<ClassResponse>()
-                .setQuery(query!!, ClassResponse::class.java)
-                .build()
-
-        Log.d("TAG", response.toString())
-
-        adapter = object : FirestoreRecyclerAdapter<ClassResponse, FriendsHolder>(response) {
-            override fun onBindViewHolder(holder: FriendsHolder, position: Int, model: ClassResponse) {
-//                studentClass.text = "Diego"
-//                time.text = model.dueDate
-                holder.textName?.text = model.name
-//                holder.textName.text(model.getName())
-//                holder.textTitle.setText(model.getTitle())
-//                holder.textCompany.setText(model.getCompany())
-
-//                holder.itemView.setOnClickListener({ v ->
-//                    Snackbar.make(friendList, model.getName() + ", " + model.getTitle() + " at " + model.getCompany(), Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show()
-//                })
-            }
-
-            override fun onCreateViewHolder(group: ViewGroup, i: Int): FriendsHolder {
-                val view = LayoutInflater.from(group.context)
-                        .inflate(R.layout.class_item, group, false)
-
-                return FriendsHolder(view)
-            }
-
-            override fun onError(e: FirebaseFirestoreException) {
-                Log.e("error", e.message)
-            }
-
-        }
-
-        (adapter as FirestoreRecyclerAdapter<ClassResponse, FriendsHolder>).notifyDataSetChanged()
-        recycler.adapter = adapter
-    }
-
-    inner class FriendsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var textName: TextView? = itemView.findViewById(R.id.studentClass)
-//        internal var imageView: CircleImageView? = null
-//        internal var textTitle: TextView? = null
-//        internal var textCompany: TextView? = null
-
-        init {
-//            ButterKnife.bind(this, itemView)
+    private fun notes(): List<Note> {
+        when (dayOfTheWeek) {
+            "segunda-feira" -> return listOf(
+                    Note("13:10", "Métodos e Técnicas de Pesquisa"),
+                    Note("15:10", "Algoritmos e Programação Procedimental"),
+                    Note("17:10", "Geometria Analítica e Álgebra Linear"))
+            "terça-feira" -> return listOf(
+                    Note("13:10", "Algoritmos e Programação Procedimental"),
+                    Note("15:10", "Introdução à Sistemas de Informação"),
+                    Note("17:10", "Pré-Cálculo"))
+            "quarta-feira" -> return listOf(
+                    Note("17:10", "Pré-Cálculo"))
+            "quinta-feira" -> return listOf(
+                    Note("13:10", "Geometria Analítica e Álgebra Linear"),
+                    Note("15:10", "Português Instrumental I"),
+                    Note("17:10", "Introdução à Sistemas de Informação"))
+            else -> return listOf(
+                    Note("-", "Aproveite seu tempo livre hoje para estudar"))
         }
     }
 
+    private fun assignments(): List<Assignment> {
+        val sdf = SimpleDateFormat("dd/MM/yyyy") // here set the pattern as you date in string was containing like date/month/year
+        val d = sdf.parse("20/12/2011")
+        return listOf(
+                Assignment("14/05/18", "PROG", "Lista 6",
+                        resources.getColor(R.color.blue_500), daysRemaining(Date(2018,4,14))),
+                Assignment("21/05/18", "PROG", "Lista 7",
+                        resources.getColor(R.color.blue_500), daysRemaining(Date(2018,4,21))),
+                Assignment("24/05/18", "GAAL", "Lista 3",
+                        resources.getColor(R.color.green_500), daysRemaining(Date(2018,4,24)))
+        )
+    }
+
+    private fun daysRemaining(date: Date): Int {
+//        val diff = date.time - today.time
+//        return diff / (24 * 60 * 60 * 1000)
+        return (date.date - today.date)
+    }
 }

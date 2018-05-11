@@ -22,18 +22,42 @@
             <!--android:background="@drawable/circle" />-->
 
         <TextView
-            android:id="@+id/note_item_title"
+            android:id="@+id/assignment_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="15:10" />
+            tools:text="14/05/18" />
 
         <TextView
-            android:id="@+id/note_item_description"
+            android:id="@+id/assignment_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:textColor="@color/black"
-            tools:text="PCAL" />
+            tools:text="Lista 6" />
+
+         <TextView
+            android:id="@+id/assignment_item_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            tools:text="PROG" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:id="@+id/assignment_item_flag"
+            android:layout_marginLeft="48dp"
+            android:layout_marginStart="48dp"
+            android:src="@drawable/ic_flag"/>
+
+        <TextView
+            android:id="@+id/assignment_item_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            tools:text="2d" />
     </LinearLayout>
 </LinearLayout>
